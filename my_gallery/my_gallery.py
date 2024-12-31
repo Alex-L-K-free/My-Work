@@ -1,6 +1,6 @@
 import easywebdav
 from urllib.parse import urlparse
-#+дополнение
+#+дополнение=========
 def connect_to_webdav(server_url, username, password):
     try:
         # Разбираем URL, чтобы извлечь хост и протокол
