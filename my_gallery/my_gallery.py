@@ -1,13 +1,19 @@
 import easywebdav
-
+from urllib.parse import urlparse
+#+дополнение
 def connect_to_webdav(server_url, username, password):
     try:
+        # Разбираем URL, чтобы извлечь хост и протокол
+        parsed_url = urlparse(server_url)
+        host = parsed_url.hostname
+        protocol = parsed_url.scheme
+
         # Подключение к серверу WebDAV
         webdav = easywebdav.connect(
-            host=server_url,
+            host=host,
             username=username,
             password=password,
-            protocol="https" if server_url.startswith("https") else "http"
+            protocol=protocol
         )
         print(f"Успешно подключено к серверу {server_url}")
         return webdav
@@ -27,12 +33,13 @@ def list_directory(webdav, directory="/"):
 
 if __name__ == "__main__":
     # Данные для подключения
-    server_url = input("Введите URL WebDAV сервера (например, https://webdav.server.com): ")
-    username = input("Введите имя пользователя: ")
-    password = input("Введите пароль: ")
+    server_url = input("Введите URL WebDAV сервера (например, https://webdav.server.com): ").strip()
+    username = input("Введите имя пользователя: ").strip()
+    password = input("Введите пароль: ").strip()
 
     # Подключение к серверу
     webdav = connect_to_webdav(server_url, username, password)
     if webdav:
-        # Список содержимого корневой директории
-        list_directory(webdav, "/")
+        # Ввод директории для проверки
+        directory = input("Введите путь к директории (например, /webdav/): ").strip()
+        list_directory(webdav, directory)
