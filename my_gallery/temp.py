@@ -3,6 +3,10 @@ import json
 import easywebdav
 from urllib.parse import urlparse
 from tkinter import Tk, Label, Entry, Button, Listbox, END, messagebox
+import locale
+
+# Установка кодировки для корректного отображения кириллицы
+locale.setlocale(locale.LC_ALL, '')
 
 # Файл для сохранения данных авторизации
 CREDENTIALS_FILE = "credentials.json"
@@ -13,20 +17,23 @@ def save_credentials(server_url, username, password):
         "username": username,
         "password": password
     }
-    with open(CREDENTIALS_FILE, "w") as f:
-        json.dump(credentials, f)
+    with open(CREDENTIALS_FILE, "w", encoding="utf-8") as f:
+        json.dump(credentials, f, ensure_ascii=False)
 
 def load_credentials():
     if os.path.exists(CREDENTIALS_FILE):
-        with open(CREDENTIALS_FILE, "r") as f:
+        with open(CREDENTIALS_FILE, "r", encoding="utf-8") as f:
             return json.load(f)
     return None
 
 def connect_to_webdav(server_url, username, password):
     try:
+        server_url = server_url.rstrip('/') + '/'  # Убедимся, что URL оканчивается на /
         parsed_url = urlparse(server_url)
         host = parsed_url.hostname
         protocol = parsed_url.scheme
+
+        print(f"Подключение к {server_url} с пользователем {username}")
 
         webdav = easywebdav.connect(
             host=host,
@@ -61,7 +68,9 @@ def on_connect():
     global webdav
     webdav = connect_to_webdav(server_url, username, password)
     if webdav:
-        update_file_list("/")
+        # Указываем директорию по умолчанию
+        default_directory = "/webdav/"  # Измените путь на вашу директорию
+        update_file_list(default_directory)
 
 def update_file_list(directory):
     if webdav:
