@@ -2,6 +2,8 @@ import os
 import json
 import easywebdav
 from urllib.parse import urlparse
+# ++
+from urllib.parse import unquote
 from tkinter import Tk, Label, Entry, Button, Listbox, END, messagebox
 import locale
 
@@ -46,10 +48,21 @@ def connect_to_webdav(server_url, username, password):
         messagebox.showerror("Ошибка подключения", f"Ошибка подключения: {e}")
         return None
 
+# def list_directory(webdav, directory="/"):
+#     try:
+#         items = webdav.ls(directory)
+#         return [f"[DIR] {item.name}" if item.contenttype == "httpd/unix-directory" else f"[FILE] {item.name}" for item in items]
+#     except Exception as e:
+#         messagebox.showerror("Ошибка", f"Ошибка при получении содержимого директории: {e}")
+#         return []
 def list_directory(webdav, directory="/"):
     try:
         items = webdav.ls(directory)
-        return [f"[DIR] {item.name}" if item.contenttype == "httpd/unix-directory" else f"[FILE] {item.name}" for item in items]
+        return [
+            f"[DIR] {unquote(item.name)}" if item.contenttype == "httpd/unix-directory"
+            else f"[FILE] {unquote(item.name)}"
+            for item in items
+        ]
     except Exception as e:
         messagebox.showerror("Ошибка", f"Ошибка при получении содержимого директории: {e}")
         return []
