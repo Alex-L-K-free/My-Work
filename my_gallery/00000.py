@@ -99,6 +99,7 @@ class WebDAVApp(App):
         # RecycleView для отображения файлов
         self.file_list = RecycleView()
         self.file_list.viewclass = 'FileItem'
+        self.file_list.data = []  # Пустой список данных по умолчанию
         self.file_list.adapter = None
 
         # Расположение виджетов
@@ -137,6 +138,7 @@ class WebDAVApp(App):
     def update_file_list(self, directory):
         if self.webdav:
             file_list = list_directory(self.webdav, directory)
+            self.file_list.data = [{'text': item} for item in file_list]  # Используйте self.file_list.data
             data = [{'text': item} for item in file_list]
 
             self.file_list.adapter = data
