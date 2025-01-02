@@ -43,4 +43,3 @@ if __name__ == "__main__":
         # Ввод директории для проверки
         directory = input("Введите путь к директории (например, /webdav/): ").strip()
         list_directory(webdav, directory)
-#run
