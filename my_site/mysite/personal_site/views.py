@@ -9,7 +9,7 @@ def home(request):
         'profession': 'учитель',
         'about': 'Краткая информация о вас.',
         'contacts': {
-            'email': 'example@mail.com',
+            'email': 'kiykonastya@gmail.com',
             'phone': '+375 (29) 8598879',
             'viber': '+375 29 8598879',
             'github': 'https://github.com/example'
@@ -17,8 +17,9 @@ def home(request):
     }
 
     projects = [
-        {'name': 'Проект 1', 'description': 'Описание проекта 1', 'link': 'https://example.com/project1'},
-        {'name': 'Проект 2', 'description': 'Описание проекта 2', 'link': 'https://example.com/project2'},
+        {'name': 'Математика 6 класс', 'description': 'Описание', 'link': 'https://example.com/project1'},
+        {'name': 'Химия 7 класс', 'description': 'Описание ', 'link': 'https://example.com/project2'},
+        {'name': 'Биология 7 класс', 'description': 'Описание ', 'link': 'https://example.com/project3'},
     ]
 
     context = {
