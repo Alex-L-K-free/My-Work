@@ -2,8 +2,11 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.shortcuts import render
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Project
+from .forms import ProjectForm
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import AuthenticationForm
 
 # def home(request):
 #     personal_info = {
@@ -69,3 +72,15 @@ def project_detail(request, project_id):
     if not project:
         raise Http404("Проект не найден")
     return render(request, 'project_detail.html', {'project': project})
+
+#представления для обработки формы:
+# personal_site/views.py
+def create_project(request):
+    if request.method == 'POST':
+        form = ProjectForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = ProjectForm()
+    return render(request, 'create_project.html', {'form': form})

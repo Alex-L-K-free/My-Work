@@ -7,9 +7,10 @@ from django.db import models
 from django.db import models
 
 class Project(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField()
-    link = models.URLField()
+    name = models.CharField(max_length=200) # Название проекта
+    description = models.TextField() # Описание проекта
+    link = models.URLField() # Ссылка на проект
+    file = models.FileField(upload_to='project_files/', null=True, blank=True)  # Загрузка файлов
 
     def __str__(self):
         return self.name
