@@ -12,7 +12,7 @@
 <body>
     <h1>{{ project.name }}</h1>
     <p>{{ project.description }}</p>
-    <a href="{{ project.link }}" target="_blank">Перейти к проекту</a>
+<!--    <a href="{{ project.link }}" target="_blank">Перейти к проекту</a>-->
 
     <!-- Дополнительный контент, который вы хотите отображать на странице проекта -->
     <!-- Отображение сообщения -->
@@ -22,9 +22,28 @@
 
     <!-- Форма для загрузки файла -->
     <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Загрузить файл</button>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Загрузить файл</button>
+</form>
+
+{% if message %}
+    <p>{{ message }}</p>
+{% endif %}
+
+<!--{% if project %}-->
+<!--    <h2>Проект: {{ project.name }}</h2>-->
+<!--    <p>{{ project.description }}</p>-->
+<!--    <a href="{{ project.link }}" target="_blank">Ссылка на проект</a>-->
+
+    {% if uploaded_file %}
+        <h3>Загруженный файл:</h3>
+        <a href="{{ uploaded_file.url }}" target="_blank">{{ uploaded_file.name }}</a>
+    {% else %}
+        <p>Файл не был загружен.</p>
+    {% endif %}
+{% endif %}
+
     </form>
 </body>
 </html>
