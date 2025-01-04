@@ -1,4 +1,4 @@
-
+import os
 from django.shortcuts import render
 
 # Create your views here.
@@ -8,6 +8,8 @@ from .models import Project
 from .forms import ProjectForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
+from .forms import FileUploadForm
+
 
 # def home(request):
 #     personal_info = {
@@ -63,16 +65,52 @@ def home(request):
 #     context = {'project': project}
 #     return render(request, 'project_detail.html', context)
 #     # return render(request, 'index.html', context)
+# def project_detail(request, project_id):
+#     projects = [
+#         {'id': 1, 'name': 'Математика 6 класс', 'description': 'Описание', 'link': 'https://example.com/project1'},
+#         {'id': 2, 'name': 'Химия 7 класс', 'description': 'Описание', 'link': 'https://example.com/project2'},
+#         {'id': 3, 'name': 'Биология 7 класс', 'description': 'Описание', 'link': 'https://example.com/project3'},
+#     ]
+#     project = next((p for p in projects if p['id'] == project_id), None)  # Находим проект по ID
+#     if not project:
+#         raise Http404("Проект не найден")
+#     return render(request, 'project_detail.html', {'project': project})
 def project_detail(request, project_id):
     projects = [
         {'id': 1, 'name': 'Математика 6 класс', 'description': 'Описание', 'link': 'https://example.com/project1'},
         {'id': 2, 'name': 'Химия 7 класс', 'description': 'Описание', 'link': 'https://example.com/project2'},
         {'id': 3, 'name': 'Биология 7 класс', 'description': 'Описание', 'link': 'https://example.com/project3'},
     ]
-    project = next((p for p in projects if p['id'] == project_id), None)  # Находим проект по ID
+    project = next((p for p in projects if p['id'] == project_id), None)
     if not project:
         raise Http404("Проект не найден")
-    return render(request, 'project_detail.html', {'project': project})
+
+    # Обработка формы
+    if request.method == 'POST':
+        form = FileUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            uploaded_file = request.FILES['file']
+            upload_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'uploads')
+
+            # Создаём папку, если её нет
+            if not os.path.exists(upload_dir):
+                os.makedirs(upload_dir)
+
+            # Здесь можно сохранить файл, например:
+            # with open(f'uploads/{uploaded_file.name}', 'wb+') as destination:
+            with open(os.path.join(upload_dir, uploaded_file.name), 'wb+') as destination:
+                for chunk in uploaded_file.chunks():
+                    destination.write(chunk)
+            message = "Файл успешно загружен!"
+        else:
+            message = "Ошибка при загрузке файла."
+    else:
+        form = FileUploadForm()
+        message = ""
+
+    return render(request, 'project_detail.html', {'project': project, 'form': form, 'message': message})
+
+
 
 #представления для обработки формы:
 # personal_site/views.py

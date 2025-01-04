@@ -7,3 +7,6 @@ class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
         fields = ['name', 'description', 'link', 'file']
+
+class FileUploadForm(forms.Form):
+    file = forms.FileField(label="Выберите файл")
