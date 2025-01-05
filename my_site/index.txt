@@ -11,3 +11,6 @@ python manage.py runserver
 Сервер будет запущен по умолчанию на http://127.0.0.1:8000/.
 
 Теперь вы можете открыть браузер и перейти по адресу http://127.0.0.1:8000/, чтобы увидеть ваш работающий Django проект.
+
+python manage.py makemigrations
+python manage.py migrate
