@@ -65,6 +65,8 @@ def project_detail(request, project_id):
                     destination.write(chunk)
 
             message = "Файл успешно загружен!"
+            # Перенаправление на ту же страницу, чтобы обновить данные
+            return redirect('project_detail', project_id=project_id)
         else:
             message = "Ошибка при загрузке файла."
     else:
