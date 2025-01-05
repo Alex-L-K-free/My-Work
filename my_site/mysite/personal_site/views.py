@@ -1,3 +1,4 @@
+from urllib.parse import unquote
 import os
 # Create your views here.
 from django.shortcuts import render, redirect, get_object_or_404
@@ -85,7 +86,6 @@ def project_detail(request, project_id):
         'file_urls': file_urls  # Список загруженных файлов
     })
 
-
 #представления для обработки формы:
 # personal_site/views.py
 def create_project(request):
@@ -100,16 +100,24 @@ def create_project(request):
 
 # Удаление файла
 def delete_file(request, project_id, filename):
-    project = get_object_or_404(Project, id=project_id)
-    project_dir = os.path.join(settings.MEDIA_ROOT, f'project_{project_id}')
+    # Декодируем имя файла
+    filename = unquote(filename)
 
-    # Проверка на существование файла
+    # Получаем проект
+    # project_dir = os.path.join(settings.MEDIA_ROOT, f'project_{project_id}')
+    project_dir = os.path.join(settings.BASE_DIR, 'uploads', f'project_{project_id}')
     file_path = os.path.join(project_dir, filename)
+
+    # Логирование для отладки
+    print(f"Попытка удалить файл: {filename}")
+    print(f"Путь к файлу: {file_path}")
+
+    # Проверка существования файла
     if os.path.exists(file_path):
         os.remove(file_path)
-        message = "Файл успешно удален!"
+        print(f"Файл '{filename}' удален!")
     else:
-        message = "Ошибка: файл не найден!"
+        print(f"Файл '{filename}' не найден!")
 
-    # Перенаправление на страницу проекта с сообщением
+    # Перенаправление на страницу проекта
     return redirect('project_detail', project_id=project_id)
