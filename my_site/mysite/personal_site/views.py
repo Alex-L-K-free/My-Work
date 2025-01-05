@@ -5,6 +5,8 @@ from .forms import ProjectForm
 from .forms import FileUploadForm
 from django.conf import settings
 from django.http import Http404
+from django.core.files.storage import FileSystemStorage
+from .models import Project
 
 def home(request):
     personal_info = {
@@ -93,3 +95,19 @@ def create_project(request):
     else:
         form = ProjectForm()
     return render(request, 'create_project.html', {'form': form})
+
+# Удаление файла
+def delete_file(request, project_id, filename):
+    project = get_object_or_404(Project, id=project_id)
+    project_dir = os.path.join(settings.MEDIA_ROOT, f'project_{project_id}')
+
+    # Проверка на существование файла
+    file_path = os.path.join(project_dir, filename)
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        message = "Файл успешно удален!"
+    else:
+        message = "Ошибка: файл не найден!"
+
+    # Перенаправление на страницу проекта с сообщением
+    return redirect('project_detail', project_id=project_id)
