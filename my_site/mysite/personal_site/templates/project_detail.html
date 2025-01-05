@@ -26,21 +26,31 @@
     <button type="submit">Загрузить файл</button>
 </form>
 
-{% if message %}
-    <p>{{ message }}</p>
-{% endif %}
+<!--{% if message %}-->
+<!--    <p>{{ message }}</p>-->
+<!--{% endif %}-->
 
 <!--{% if project %}-->
 <!--    <h2>Проект: {{ project.name }}</h2>-->
 <!--    <p>{{ project.description }}</p>-->
 <!--    <a href="{{ project.link }}" target="_blank">Ссылка на проект</a>-->
 
-    {% if uploaded_file %}
-        <h3>Загруженный файл:</h3>
-        <a href="{{ uploaded_file.url }}" target="_blank">{{ uploaded_file.name }}</a>
-    {% else %}
-        <p>Файл не был загружен.</p>
-    {% endif %}
+<!--    {% if uploaded_file %}-->
+<!--        <h3>Загруженный файл:</h3>-->
+<!--        <a href="{{ uploaded_file.url }}" target="_blank">{{ uploaded_file.name }}</a>-->
+<!--    {% else %}-->
+<!--        <p>Файл не был загружен.</p>-->
+<!--    {% endif %}-->
+<!--{% endif %}-->
+    <h3>Загруженные файлы:</h3>
+{% if file_urls %}
+    <ul>
+        {% for file in file_urls %}
+            <li><a href="{{ file.url }}" target="_blank">{{ file.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Файлы отсутствуют.</p>
 {% endif %}
 
     </form>

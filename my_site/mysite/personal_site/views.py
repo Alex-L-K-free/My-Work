@@ -73,6 +73,51 @@ def home(request):
 #         'message': message,
 #         'uploaded_file': uploaded_file  # Передаем загруженный файл в шаблон
 #     })
+# def project_detail(request, project_id):
+#     # Пример списка проектов
+#     projects = [
+#         {'id': 1, 'name': 'Математика 6 класс', 'description': 'Описание', 'link': 'https://example.com/project1'},
+#         {'id': 2, 'name': 'Химия 7 класс', 'description': 'Описание', 'link': 'https://example.com/project2'},
+#         {'id': 3, 'name': 'Биология 7 класс', 'description': 'Описание', 'link': 'https://example.com/project3'},
+#     ]
+#
+#     # Поиск проекта
+#     project = next((p for p in projects if p['id'] == project_id), None)
+#     if not project:
+#         raise Http404("Проект не найден")
+#
+#     uploaded_file = None  # Инициализация переменной для загружаемого файла
+#     message = ""  # Сообщение о результате загрузки
+#
+#     if request.method == 'POST':
+#         form = FileUploadForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             uploaded_file = request.FILES['file']
+#
+#             # Создаём папку для конкретного проекта
+#             project_dir = os.path.join(settings.BASE_DIR, 'uploads', f'project_{project_id}')
+#             if not os.path.exists(project_dir):
+#                 os.makedirs(project_dir)
+#
+#             # Полный путь к файлу
+#             file_path = os.path.join(project_dir, uploaded_file.name)
+#             with open(file_path, 'wb+') as destination:
+#                 for chunk in uploaded_file.chunks():
+#                     destination.write(chunk)
+#
+#             message = "Файл успешно загружен!"
+#             uploaded_file.url = os.path.join(settings.MEDIA_URL, f'project_{project_id}', uploaded_file.name)
+#         else:
+#             message = "Ошибка при загрузке файла."
+#     else:
+#         form = FileUploadForm()
+#
+#     return render(request, 'project_detail.html', {
+#         'project': project,
+#         'form': form,
+#         'message': message,
+#         'uploaded_file': uploaded_file,  # Передача информации о загруженном файле в шаблон
+#     })
 def project_detail(request, project_id):
     # Пример списка проектов
     projects = [
@@ -86,37 +131,42 @@ def project_detail(request, project_id):
     if not project:
         raise Http404("Проект не найден")
 
-    uploaded_file = None  # Инициализация переменной для загружаемого файла
     message = ""  # Сообщение о результате загрузки
+
+    # Определяем папку для файлов проекта
+    project_dir = os.path.join(settings.BASE_DIR, 'uploads', f'project_{project_id}')
+    if not os.path.exists(project_dir):
+        os.makedirs(project_dir)
+
+    # Список всех файлов в папке проекта
+    uploaded_files = os.listdir(project_dir)
 
     if request.method == 'POST':
         form = FileUploadForm(request.POST, request.FILES)
         if form.is_valid():
             uploaded_file = request.FILES['file']
-
-            # Создаём папку для конкретного проекта
-            project_dir = os.path.join(settings.BASE_DIR, 'uploads', f'project_{project_id}')
-            if not os.path.exists(project_dir):
-                os.makedirs(project_dir)
-
-            # Полный путь к файлу
             file_path = os.path.join(project_dir, uploaded_file.name)
             with open(file_path, 'wb+') as destination:
                 for chunk in uploaded_file.chunks():
                     destination.write(chunk)
 
             message = "Файл успешно загружен!"
-            uploaded_file.url = os.path.join(settings.MEDIA_URL, f'project_{project_id}', uploaded_file.name)
         else:
             message = "Ошибка при загрузке файла."
     else:
         form = FileUploadForm()
 
+    # Генерация URL для файлов
+    file_urls = [
+        {'name': file, 'url': os.path.join(settings.MEDIA_URL, f'project_{project_id}', file)}
+        for file in uploaded_files
+    ]
+
     return render(request, 'project_detail.html', {
         'project': project,
         'form': form,
         'message': message,
-        'uploaded_file': uploaded_file,  # Передача информации о загруженном файле в шаблон
+        'file_urls': file_urls  # Список загруженных файлов
     })
 
 
