@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', views.home, name='home'),
     path('project/<int:project_id>/', views.project_detail, name='project_detail'), # Новый путь для каждого проекта
+    path('project/<int:project_id>/download/<str:filename>/', views.download_file, name='download_file'),
     path('project/<int:project_id>/delete_file/<str:filename>/', views.delete_file, name='delete_file'),
     path('project/create/', views.create_project, name='create_project'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

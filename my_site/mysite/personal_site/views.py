@@ -1,4 +1,6 @@
 from urllib.parse import unquote
+from django.http import FileResponse
+import mimetypes
 import os
 # Create your views here.
 from django.shortcuts import render, redirect, get_object_or_404
@@ -121,3 +123,27 @@ def delete_file(request, project_id, filename):
 
     # Перенаправление на страницу проекта
     return redirect('project_detail', project_id=project_id)
+
+def download_file(request, project_id, filename):
+    # Декодируем имя файла
+    filename = unquote(filename)
+
+    # Определяем путь к файлу
+    project_dir = os.path.join(settings.BASE_DIR, 'uploads', f'project_{project_id}')
+    file_path = os.path.join(project_dir, filename)
+
+    # Логирование для отладки
+    print(f"Попытка загрузить файл: {filename}")
+    print(f"Путь к файлу: {file_path}")
+
+    # Проверяем существование файла
+    if not os.path.exists(file_path):
+        raise Http404("Файл не найден!")
+
+    # Определяем MIME-тип файла
+    mime_type, _ = mimetypes.guess_type(file_path)
+
+    # Возвращаем файл для скачивания
+    response = FileResponse(open(file_path, 'rb'), content_type=mime_type)
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    return response

@@ -154,7 +154,8 @@
                     <a href="{{ file.url }}" target="_blank">{{ file.name }}</a>
 
                     <!-- Кнопка Загрузить -->
-                    <a href="{{ file.url }}" download="{{ file.name }}" style="background-color: #4CAF50; color: white; border: none; padding: 0.5rem 1rem; text-decoration: none; border-radius: 5px; margin-right: 10px;">
+<!--                    <a href="{{ file.url }}" download="{{ file.name }}" style="background-color: #4CAF50; color: white; border: none; padding: 0.5rem 1rem; text-decoration: none; border-radius: 5px; margin-right: 10px;">-->
+                    <a href="{% url 'download_file' project.id file.name %}" style="background-color: #4CAF50; color: white; border: none; padding: 0.5rem 1rem; text-decoration: none; border-radius: 5px; margin-right: 10px;">
                         Загрузить
                     </a>
 
