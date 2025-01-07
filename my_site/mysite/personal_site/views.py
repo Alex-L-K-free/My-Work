@@ -1,3 +1,4 @@
+# personal_site/views.py
 from urllib.parse import unquote
 from django.http import FileResponse
 import mimetypes

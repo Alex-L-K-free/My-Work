@@ -1,3 +1,4 @@
+# personal_site/apps.py
 from django.apps import AppConfig
 
 
