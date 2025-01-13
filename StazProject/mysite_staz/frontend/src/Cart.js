@@ -1,8 +1,9 @@
+// frontend/src/cart.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const Cart = () => {
-    const [cart, setCart] = useState([]);
+    const [cart, setCart] = useState([]); // Состояние для корзины
     const [loading, setLoading] = useState(true); // Состояние для отслеживания загрузки
     const [error, setError] = useState(null); // Состояние для ошибок
 
@@ -49,28 +50,3 @@ const Cart = () => {
 
 export default Cart;
 
-
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
-//
-// const Cart = () => {
-//     const [cart, setCart] = useState([]);
-//
-//     useEffect(() => {
-//         axios.get("http://localhost:8000/api/cart/")
-//             .then(response => setCart(response.data));
-//     }, []);
-//
-//     return (
-//         <div>
-//             <h2>Your Cart</h2>
-//             <ul>
-//                 {cart.map(item => (
-//                     <li key={item.id}>{item.name} - {item.price}</li>
-//                 ))}
-//             </ul>
-//         </div>
-//     );
-// };
-//
-// export default Cart;
