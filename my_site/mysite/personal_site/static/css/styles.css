@@ -1,8 +1,0 @@
-/* personal_site/static/css/styles.css */
-body {
-    background-color: #f0f0f0; /* Цвет фона */
-    background-image: url('/static/images/background.jpg'); /* Фон с изображением */
-    background-size: cover; /* Покрывает весь экран */
-    background-repeat: no-repeat; /* Запрещает повторение изображения */
-    background-position: center; /* Центрирует изображение */
-}
