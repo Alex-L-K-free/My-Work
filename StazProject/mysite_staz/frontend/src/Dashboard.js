@@ -1,4 +1,4 @@
-// frontend/src/dashboard.js
+// mysite_staz/frontend/src/dashboard.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 

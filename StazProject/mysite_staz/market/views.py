@@ -1,4 +1,4 @@
-#views.py
+#market/views.py
 from django.shortcuts import render
 from rest_framework import viewsets
 from .models import Product, Cart, Order, Service
@@ -37,30 +37,3 @@ def register(request):
         user = User.objects.create_user(username=username, password=password)
         return Response({'message': 'User created successfully!'}, status=201)
     return Response({'error': 'Invalid data'}, status=400)
-# @api_view(['POST'])
-# def register(request):
-#     username = request.data.get('username')
-#     password = request.data.get('password')
-#     user = User.objects.create_user(username=username, password=password)
-#     return Response({'message': 'User created successfully!'})
-#
-#
-#
-# def home(request):
-#     return render(request, 'home.html')
-#
-# class ProductViewSet(viewsets.ModelViewSet):
-#     queryset = Product.objects.all()
-#     serializer_class = ProductSerializer
-#
-# class CartViewSet(viewsets.ModelViewSet):
-#     queryset = Cart.objects.all()
-#     serializer_class = CartSerializer
-#
-# class OrderViewSet(viewsets.ModelViewSet):
-#     queryset = Order.objects.all()
-#     serializer_class = OrderSerializer
-#
-# class ServiceViewSet(viewsets.ModelViewSet):
-#     queryset = Service.objects.all()
-#     serializer_class = ServiceSerializer

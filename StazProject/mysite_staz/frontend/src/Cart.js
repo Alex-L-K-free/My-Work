@@ -1,11 +1,11 @@
-// frontend/src/cart.js
+// mysite_staz/frontend/src/cart.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const Cart = () => {
-    const [cart, setCart] = useState([]); // Состояние для корзины
-    const [loading, setLoading] = useState(true); // Состояние для отслеживания загрузки
-    const [error, setError] = useState(null); // Состояние для ошибок
+    const [cart, setCart] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);  // Установим начальное значение loading в true
 
     useEffect(() => {
         const fetchCart = async () => {
@@ -20,7 +20,7 @@ const Cart = () => {
         };
 
         fetchCart();
-    }, []);
+    }, []);  // Пустой массив, чтобы выполнить эффект только один раз при монтировании компонента
 
     if (loading) {
         return <div>Загрузка...</div>;

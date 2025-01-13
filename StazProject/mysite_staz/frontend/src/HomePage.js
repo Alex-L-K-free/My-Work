@@ -1,4 +1,4 @@
-// frontend/src/homepage.js
+// mysite_staz/frontend/src/homepage.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 
