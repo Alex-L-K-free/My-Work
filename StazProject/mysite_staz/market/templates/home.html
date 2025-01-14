@@ -93,8 +93,17 @@
 
     <div class="top-bar">
         <a href="/cart" class="button">Корзина</a>
-        <a href="/register" class="button">Регистрация</a>
+        {% if user.is_authenticated %}
+            <a href="/api/profile/" class="button">Мой кабинет</a>
+        {% else %}
+            <a href="/register" class="button">Регистрация</a>
+            <a href="/login" class="button">Вход</a>
+        {% endif %}
     </div>
+<!--    <div class="top-bar">-->
+<!--        <a href="/cart" class="button">Корзина</a>-->
+<!--        <a href="/register" class="button">Регистрация</a>-->
+<!--    </div>-->
 
     <main>
         <section class="products-section">

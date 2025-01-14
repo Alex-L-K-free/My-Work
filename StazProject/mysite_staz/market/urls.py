@@ -1,7 +1,7 @@
 #market/urls.py
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ProductViewSet, CartViewSet, OrderViewSet, ServiceViewSet, register, home
+from .views import ProductViewSet, CartViewSet, OrderViewSet, ServiceViewSet, register, home, UserProfileView
 from . import views
 
 router = DefaultRouter()
@@ -16,5 +16,6 @@ urlpatterns = [
     path('', home, name='home'),  # Это маршрут для главной страницы
     path('api/', include(router.urls)),  # Это маршрут для API
     path('api/register/', register, name='register'),
+    path('api/profile/', UserProfileView.as_view(), name='user_profile'),
     path('', include(router.urls)),
 ]

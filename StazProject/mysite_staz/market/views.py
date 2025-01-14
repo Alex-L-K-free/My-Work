@@ -6,6 +6,8 @@ from .serializers import ProductSerializer, CartSerializer, OrderSerializer, Ser
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 
 # Home view
 def home(request):
@@ -28,6 +30,23 @@ class OrderViewSet(viewsets.ModelViewSet):
 class ServiceViewSet(viewsets.ModelViewSet):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
+
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        orders = Order.objects.filter(user=user)
+        order_data = [{
+            'id': order.id,
+            'status': order.status,
+            'total_price': order.total_price,
+        } for order in orders]
+        return Response({
+            'username': user.username,
+            'email': user.email,
+            'orders': order_data
+        })
 
 @api_view(['POST'])
 def register(request):
