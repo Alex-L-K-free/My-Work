@@ -1,4 +1,4 @@
-// mysite_staz/frontend/src/ProfilePage.js
+//frontend/src/ProfilePage.js
 import React, { useState, useEffect } from 'react';
 import { fetchCart } from './axiosConfig';
 
