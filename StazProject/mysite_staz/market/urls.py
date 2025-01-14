@@ -18,4 +18,4 @@ urlpatterns = [
     path('api/register/', register, name='register'),
     path('api/profile/', UserProfileView.as_view(), name='user_profile'),
     path('', include(router.urls)),
-]
+] + router.urls
