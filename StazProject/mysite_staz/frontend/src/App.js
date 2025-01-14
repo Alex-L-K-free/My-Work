@@ -11,11 +11,6 @@ import Login from './Login';
 import ProfilePage from './ProfilePage';
 import AdminPanel from './AdminPanel';
 import Register from './Register';
-// import theme from './theme';
-import CartPage from './CartPage';
-import RegisterPage from './RegisterPage';
-import LoginPage from './LoginPage';
-
 
 const theme = createTheme({
   palette: {
@@ -74,13 +69,8 @@ const App = () => {
         <Container style={{ marginTop: '20px' }}>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/" element={<HomePage />} />
-            {/*<Route path="/login" element={<Login setToken={setToken} />} />*/}
-            {/*<Route path="/register" element={<Register />} />*/}
+            <Route path="/login" element={<Login setToken={setToken} />} />
+            <Route path="/register" element={<Register />} />
             <Route
               path="/dashboard"
               element={<ProtectedRoute><Dashboard token={token} /></ProtectedRoute>}
