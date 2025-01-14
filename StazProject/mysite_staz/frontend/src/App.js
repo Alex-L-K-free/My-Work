@@ -1,19 +1,19 @@
-// frontend/src/app.js
-import './App.css'; // Импортируем стили
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; // Добавлен Navigate
-import HomePage from './HomePage'; // Импортируем страницу главного экрана
-import Dashboard from './Dashboard'; // Импортируем компонент Dashboard
-import Cart from './Cart'; // Импортируем корзину
-import Login from './Login'; // Добавлен компонент Login
+// frontend/src/App.js
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useState } from 'react';
+import HomePage from './HomePage';
+import Dashboard from './Dashboard';
+import Cart from './Cart';
+import Login from './Login';
+import ProfilePage from './ProfilePage';
+import AdminPanel from './AdminPanel';
 
 // Поддерживаемые браузеры
 const supportedBrowsers = ['Firefox'];
 
-// Функция для проверки браузера
 const isSupportedBrowser = () => {
   const userAgent = navigator.userAgent;
-  return supportedBrowsers.some(browser => userAgent.includes(browser));
+  return supportedBrowsers.some((browser) => userAgent.includes(browser));
 };
 
 function App() {
@@ -37,22 +37,10 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login setToken={setToken} />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard token={token} setToken={setToken} />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/cart"
-          element={
-            <ProtectedRoute>
-              <Cart token={token} />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard token={token} setToken={setToken} /></ProtectedRoute>} />
+        <Route path="/cart" element={<ProtectedRoute><Cart token={token} /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><ProfilePage token={token} /></ProtectedRoute>} />
+        <Route path="/admin" element={<ProtectedRoute><AdminPanel token={token} /></ProtectedRoute>} />
       </Routes>
     </Router>
   );
@@ -62,48 +50,6 @@ export default App;
 
 
 
-
-// import './App.css'; // Импортируем стили
-// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Импортируем необходимые компоненты для маршрутизации
-// import HomePage from './HomePage'; // Импортируем страницу главного экрана
-// import Dashboard from './Dashboard'; // Импортируем компонент Dashboard
-// import Cart from './Cart'; // Импортируем корзину
-//
-// // Поддерживаемые браузеры
-// const supportedBrowsers = ['Firefox'];
-//
-// // Функция для проверки браузера
-// const isSupportedBrowser = () => {
-//   const userAgent = navigator.userAgent;
-//   return supportedBrowsers.some(browser => userAgent.includes(browser));
-// };
-//
-// function App() {
-//   if (!isSupportedBrowser()) {
-//     return (
-//       <div className="unsupported-browser">
-//         <h1>Этот браузер не поддерживается</h1>
-//         <p>Пожалуйста, используйте один из поддерживаемых браузеров: Chrome, Firefox или Safari.</p>
-//       </div>
-//     );
-//   }
-//
-//   return (
-//     <Router>
-//       <Routes>
-//         {/* Главная страница */}
-//         <Route path="/" element={<HomePage />} />
-//         {/* Панель управления */}
-//         <Route path="/dashboard" element={<Dashboard />} />
-//         {/* Страница корзины */}
-//         <Route path="/cart" element={<Cart />} />
-//       </Routes>
-//     </Router>
-//   );
-// }
-//
-// export default App;
-//
 
 
 
