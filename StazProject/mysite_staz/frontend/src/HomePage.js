@@ -12,7 +12,8 @@ const HomePage = () => {
   useEffect(() => {
     fetch('/products/products.json')
     fetch('http://localhost:8000/api/products/')
-        .then((response) => response.json())
+    // fetch('http://localhost:8000/media/products/')
+      .then((response) => response.json())
       .then((data) => setProducts(data))
       .catch((error) => console.error('Ошибка загрузки товаров:', error));
   }, []);
