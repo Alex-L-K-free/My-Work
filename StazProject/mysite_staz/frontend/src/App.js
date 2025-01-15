@@ -1,4 +1,4 @@
-// // frontend/src/App.js
+// frontend/src/App.js
 import './style.css';
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
@@ -38,7 +38,6 @@ const App = () => {
                 <Button color="inherit" component={Link} to="/login">Вход</Button>
                 <Button color="inherit" component={Link} to="/dashboard">Личный кабинет</Button>
                 <Button color="inherit" component={Link} to="/cart"> Корзина ({cart.length})</Button>
-                {/*<Button color="inherit" component={Link} to="/register">Регистрация</Button>*/}
               </>
             )}
           </Toolbar>
@@ -56,5 +55,31 @@ const App = () => {
     </ThemeProvider>
   );
 };
+
+const sendData = async () => {
+  const data = { key: "value" };
+
+  try {
+    const response = await fetch("http://localhost:8000/api/data/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      console.log("Response from server:", result);
+    } else {
+      console.error("Error:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Request failed:", error);
+  }
+};
+
+sendData();
+
 
 export default App;

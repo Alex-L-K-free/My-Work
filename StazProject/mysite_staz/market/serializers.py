@@ -21,3 +21,6 @@ class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
         fields = '__all__'
+
+class ExampleSerializer(serializers.Serializer):
+    key = serializers.CharField(max_length=100)
