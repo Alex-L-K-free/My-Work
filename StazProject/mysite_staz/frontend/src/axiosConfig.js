@@ -7,11 +7,16 @@ const instance = axios.create({
 
 export const fetchCart = async (token) => {
   try {
-    const response = await instance.get('/cart/', {
+    const response = await axios.get('/api/cart', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+    // const response = await instance.get('/cart/', {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // });
     return response;  // Возвращаем ответ
   } catch (err) {
     throw new Error('Ошибка при загрузке корзины');
