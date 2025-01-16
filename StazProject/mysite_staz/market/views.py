@@ -8,6 +8,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
+from rest_framework.viewsets import ReadOnlyModelViewSet
 from django.views.decorators.csrf import csrf_exempt
 
 # Home view
@@ -20,6 +21,8 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
 
     def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
         return {'request': self.request}
 
 class CartViewSet(viewsets.ModelViewSet):
