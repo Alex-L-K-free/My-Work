@@ -12,7 +12,8 @@ const HomePage = () => {
   useEffect(() => {
     fetch('/products/products.json')
     fetch('http://localhost:8000/api/products/')
-    // fetch('http://localhost:8000/media/products/')
+    fetch('http://127.0.0.1:8000/api/products/')
+        // fetch('http://localhost:8000/media/products/')
       .then((response) => response.json())
       .then((data) => setProducts(data))
       .catch((error) => console.error('Ошибка загрузки товаров:', error));
@@ -46,51 +47,91 @@ const HomePage = () => {
           Найдите свою следующую любимую книгу!
         </Typography>
 
-        <Grid container spacing={2} justifyContent="center" sx={{ mt: 1 }}>
-          {products.map((product) => (
-            <Grid item key={product.id} xs={12} sm={6} md={4}>
-              <Card
-                sx={{
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
+
+    <Grid container spacing={2} justifyContent="center" sx={{ mt: 1 }}>
+      {products.map((product) => (
+        <Grid item key={product.id} xs={12} sm={6} md={4}>
+          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <CardMedia
+              component="img"
+              image={product.image || '/placeholder.png'} // Замените на изображение-заглушку, если `product.image` отсутствует
+              alt={product.name}
+              sx={{
+                height: 180,
+                width: 'auto',
+                maxWidth: '100%',
+                backgroundColor: '#f5f5f5',
+              }}
+            />
+            <CardContent sx={{ flexGrow: 1 }}>
+              <Typography variant="h6" gutterBottom>
+                {product.name}
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                {product.description}
+              </Typography>
+              <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
+                {`Цена: ${product.price} BYN`}
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => addToCart(product)}
+                sx={{ mt: 2 }}
               >
-                <CardMedia
-                  component="img"
-                  image={product.image}
-                  alt={product.name}
-                  sx={{
-                    height: 180,
-                    width: 'auto',
-                    maxWidth: '100%',
-                    backgroundColor: '#f5f5f5',
-                  }}
-                />
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography variant="h6" gutterBottom>
-                    {product.name}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    {product.description}
-                  </Typography>
-                  <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
-                    {`Цена: ${product.price} BYN`}
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => addToCart(product)}
-                    sx={{ mt: 2 }}
-                  >
-                    Добавить в корзину
-                  </Button>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
+                Добавить в корзину
+              </Button>
+            </CardContent>
+          </Card>
         </Grid>
+      ))}
+    </Grid>
+
+        {/*<Grid container spacing={2} justifyContent="center" sx={{ mt: 1 }}>*/}
+        {/*  {products.map((product) => (*/}
+        {/*    <Grid item key={product.id} xs={12} sm={6} md={4}>*/}
+        {/*      <Card*/}
+        {/*        sx={{*/}
+        {/*          height: '100%',*/}
+        {/*          display: 'flex',*/}
+        {/*          flexDirection: 'column',*/}
+        {/*          alignItems: 'center',*/}
+        {/*        }}*/}
+        {/*      >*/}
+        {/*        <CardMedia*/}
+        {/*          component="img"*/}
+        {/*          image={product.image}*/}
+        {/*          alt={product.name}*/}
+        {/*          sx={{*/}
+        {/*            height: 180,*/}
+        {/*            width: 'auto',*/}
+        {/*            maxWidth: '100%',*/}
+        {/*            backgroundColor: '#f5f5f5',*/}
+        {/*          }}*/}
+        {/*        />*/}
+        {/*        <CardContent sx={{ flexGrow: 1 }}>*/}
+        {/*          <Typography variant="h6" gutterBottom>*/}
+        {/*            {product.name}*/}
+        {/*          </Typography>*/}
+        {/*          <Typography variant="body2" color="textSecondary">*/}
+        {/*            {product.description}*/}
+        {/*          </Typography>*/}
+        {/*          <Typography variant="h6" color="primary" sx={{ mt: 1 }}>*/}
+        {/*            {`Цена: ${product.price} BYN`}*/}
+        {/*          </Typography>*/}
+        {/*          <Button*/}
+        {/*            variant="contained"*/}
+        {/*            color="primary"*/}
+        {/*            onClick={() => addToCart(product)}*/}
+        {/*            sx={{ mt: 2 }}*/}
+        {/*          >*/}
+        {/*            Добавить в корзину*/}
+        {/*          </Button>*/}
+        {/*        </CardContent>*/}
+        {/*      </Card>*/}
+        {/*    </Grid>*/}
+        {/*  ))}*/}
+        {/*</Grid>*/}
       </Box>
 
       <Box
