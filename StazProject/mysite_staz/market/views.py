@@ -5,7 +5,7 @@ from rest_framework import viewsets
 from .models import Product, Cart, Order, Service
 from .serializers import ProductSerializer, CartSerializer, OrderSerializer, ServiceSerializer, ExampleSerializer
 from django.contrib.auth.models import User
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -29,6 +29,24 @@ class ProductViewSet(viewsets.ModelViewSet):
 class CartViewSet(viewsets.ModelViewSet):
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
+
+    @action(detail=False, methods=['post'], permission_classes=[IsAuthenticated])
+    def add_to_cart(self, request):
+        product_id = request.data.get('product_id')
+        if not product_id:
+            return Response({'error': 'Product ID is required'}, status=400)
+
+        try:
+            product = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            return Response({'error': 'Product not found'}, status=404)
+
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        cart.products.add(product)
+        cart.update_total_price()
+
+        return Response({'message': 'Product added to cart', 'total_price': cart.total_price}, status=200)
+
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
