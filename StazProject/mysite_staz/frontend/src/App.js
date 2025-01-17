@@ -83,5 +83,4 @@ const sendData = async () => {
 
 sendData();
 
-
 export default App;

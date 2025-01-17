@@ -15,6 +15,7 @@ urlpatterns = [
     path('cart/', CartViewSet.as_view({'get': 'retrieve', 'post': 'add_product'})),
     path('api/data/', views.example_view, name='example_view'),  # Эндпоинт для обработки запросов
     path('api/', include(router.urls)),
+    path('register/', views.register, name='register'),
     path('api/register/', register, name='register'),
     path('api/profile/', views.UserProfileView.as_view(), name='user_profile'),
     # path('api/profile/', UserProfileView.as_view(), name='user_profile'),

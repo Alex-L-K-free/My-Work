@@ -43,6 +43,19 @@ class CartViewSet(viewsets.ViewSet):
 
         return Response({'message': 'Product added to cart'}, status=200)
 
+    @action(detail=False, methods=['post'], url_path='add-to-cart')
+    def add_to_cart(self, request):
+        # Получить данные из запроса
+        product_id = request.data.get('product_id')
+        quantity = request.data.get('quantity', 1)
+
+        # Логика добавления товара в корзину (например, добавить в модель Cart)
+        cart = Cart.objects.get(user=request.user)
+        product = Product.objects.get(id=product_id)
+        cart.add_product(product, quantity)
+
+        return Response({'status': 'product added to cart'})
+
 # class CartViewSet(viewsets.ViewSet):
 #     @action(detail=False, methods=['post'], url_path='add-product', permission_classes=[IsAuthenticated])
 #     def add_product(self, request):
@@ -90,16 +103,35 @@ class DataView(APIView):
         # Ваша логика здесь
         return Response({"message": "Данные получены"})
 
-@api_view(['POST'])
+
+@api_view(['GET', 'POST'])
 def register(request):
-    username = request.data.get('username')
-    password = request.data.get('password')
-    if username and password:
-        if User.objects.filter(username=username).exists():
-            return Response({'error': 'User already exists'}, status=400)
-        user = User.objects.create_user(username=username, password=password)
-        return Response({'message': 'User created successfully!'}, status=201)
-    return Response({'error': 'Invalid data'}, status=400)
+    if request.method == 'GET':
+        return Response({'message': 'Please send a POST request to register.'})
+
+    if request.method == 'POST':
+        # Обработка POST-запроса для регистрации пользователя
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        if username and password:
+            if User.objects.filter(username=username).exists():
+                return Response({'error': 'User already exists'}, status=400)
+            user = User.objects.create_user(username=username, password=password)
+            return Response({'message': 'User created successfully!'}, status=201)
+
+        return Response({'error': 'Invalid data'}, status=400)
+
+# @api_view(['POST'])
+# def register(request):
+#     username = request.data.get('username')
+#     password = request.data.get('password')
+#     if username and password:
+#         if User.objects.filter(username=username).exists():
+#             return Response({'error': 'User already exists'}, status=400)
+#         user = User.objects.create_user(username=username, password=password)
+#         return Response({'message': 'User created successfully!'}, status=201)
+#     return Response({'error': 'Invalid data'}, status=400)
 
 # @api_view(['POST'])
 # def register(request):
