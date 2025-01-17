@@ -1,4 +1,5 @@
 #market/views.py
+import json
 from django.shortcuts import render
 from rest_framework import viewsets
 from .models import Product, Cart, Order, Service
@@ -10,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 # Home view
 def home(request):
@@ -70,16 +72,61 @@ def register(request):
         return Response({'message': 'User created successfully!'}, status=201)
     return Response({'error': 'Invalid data'}, status=400)
 
+# Используем декоратор DRF для обработки POST-запроса
 def example_view(request):
-    serializer = ExampleSerializer(data=request.data)
-    if serializer.is_valid():
-        return Response(serializer.data)
-    else:
-        return Response(serializer.errors, status=400)
+    # В DRF request.data будет доступен
+    if request.method == 'POST':
+        # Пытаемся обработать JSON данные
+        try:
+            data = request.data  # DRF автоматически обрабатывает данные из тела запроса
+        except Exception as e:
+            return Response({"error": str(e)}, status=400)
 
+        # Сериализуем данные
+        serializer = ExampleSerializer(data=data)
+        if serializer.is_valid():
+            return Response(serializer.data, status=200)
+        else:
+            return Response(serializer.errors, status=400)
+# def example_view(request):
+#     # Здесь используем request.data для DRF, чтобы обработать JSON
+#     serializer = ExampleSerializer(data=request.data)
+#     if serializer.is_valid():
+#         return Response(serializer.data)
+#     else:
+#         return Response(serializer.errors, status=400)
+# # def example_view(request):
+# #     serializer = ExampleSerializer(data=request.data)
+# #     if serializer.is_valid():
+# #         return Response(serializer.data)
+# #     else:
+# #         return Response(serializer.errors, status=400)
+
+# @csrf_exempt
+# def example_view(request):
+#     # Ваш код
+#     pass
+
+# @csrf_exempt
+# def example_view(request):
+#     serializer = ExampleSerializer(data=request.data)
+#     if serializer.is_valid():
+#         return Response(serializer.data)
+#     else:
+#         return Response(serializer.errors, status=400)
+
+# Если нужно обработать обычный Django-запрос (не DRF)
 @csrf_exempt
 def example_view(request):
-    # Ваш код
-    pass
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)  # Преобразуем тело запроса в JSON
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
 
-
+        # Сериализуем данные
+        serializer = ExampleSerializer(data=data)
+        if serializer.is_valid():
+            return JsonResponse(serializer.data, status=200)
+        else:
+            return JsonResponse(serializer.errors, status=400)
