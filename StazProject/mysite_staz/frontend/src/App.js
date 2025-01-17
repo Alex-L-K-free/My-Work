@@ -29,8 +29,10 @@ const App = () => {
             <Button color="inherit" component={Link} to="/">Главная</Button>
             {token ? (
               <>
-                {/*<Button color="inherit" component={Link} to="/dashboard">Личный кабинет</Button>*/}
-                {/*<Button color="inherit" component={Link} to="/cart"> Корзина ({cart.length})</Button>*/}
+                <Button color="inherit" component={Link} to="/register">Регистрация</Button>
+                <Button color="inherit" component={Link} to="/login">Вход</Button>
+                <Button color="inherit" component={Link} to="/dashboard">Личный кабинет</Button>
+                <Button color="inherit" component={Link} to="/cart"> Корзина ({cart.length})</Button>
               </>
             ) : (
               <>
