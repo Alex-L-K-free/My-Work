@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.db.models import ObjectDoesNotExist
 
 # Home view
 def home(request):
@@ -50,7 +51,14 @@ class CartViewSet(viewsets.ViewSet):
         quantity = request.data.get('quantity', 1)
 
         # Логика добавления товара в корзину (например, добавить в модель Cart)
-        cart = Cart.objects.get(user=request.user)
+        # cart = Cart.objects.get(user=request.user)
+        if not request.user.is_authenticated:
+            return Response({"detail": "Authentication credentials were not provided."}, status=401)
+
+        try:
+            cart = Cart.objects.get(user=request.user)
+        except Cart.DoesNotExist:
+            cart = Cart.objects.create(user=request.user)
         product = Product.objects.get(id=product_id)
         cart.add_product(product, quantity)
 
