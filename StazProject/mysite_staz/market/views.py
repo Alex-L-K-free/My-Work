@@ -1,8 +1,8 @@
 #market/views.py
 import json
-from django.shortcuts import render
-from rest_framework import viewsets
-from .models import Product, Cart, Order, Service
+from django.shortcuts import render, get_object_or_404
+from rest_framework import viewsets, status
+from .models import Product, Cart, CartProduct, Order, Service
 from .serializers import ProductSerializer, CartSerializer, OrderSerializer, ServiceSerializer, ExampleSerializer
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view, action
@@ -26,16 +26,12 @@ class ProductViewSet(viewsets.ModelViewSet):
         context.update({"request": self.request})
         return {'request': self.request}
 
-class CartViewSet(viewsets.ModelViewSet):
-    queryset = Cart.objects.all()
-    serializer_class = CartSerializer
-
-    @action(detail=False, methods=['post'], permission_classes=[IsAuthenticated])
-    def add_to_cart(self, request):
+class CartViewSet(viewsets.ViewSet):
+    @action(detail=False, methods=['post'], url_path='add-product', permission_classes=[IsAuthenticated])
+    def add_product(self, request):
         product_id = request.data.get('product_id')
         if not product_id:
             return Response({'error': 'Product ID is required'}, status=400)
-
         try:
             product = Product.objects.get(id=product_id)
         except Product.DoesNotExist:
@@ -43,9 +39,45 @@ class CartViewSet(viewsets.ModelViewSet):
 
         cart, created = Cart.objects.get_or_create(user=request.user)
         cart.products.add(product)
-        cart.update_total_price()
+        cart.save()
 
-        return Response({'message': 'Product added to cart', 'total_price': cart.total_price}, status=200)
+        return Response({'message': 'Product added to cart'}, status=200)
+
+# class CartViewSet(viewsets.ViewSet):
+#     def retrieve(self, request):
+#         cart, created = Cart.objects.get_or_create(user=request.user)
+#         serializer = CartSerializer(cart)
+#         return Response(serializer.data)
+#
+#     @action(detail=False, methods=['post'], url_path='add-product')
+#     def add_product(self, request):
+#         cart, created = Cart.objects.get_or_create(user=request.user)
+#         product = get_object_or_404(Product, id=request.data.get('product_id'))
+#         cart_product, created = CartProduct.objects.get_or_create(cart=cart, product=product)
+#         cart_product.quantity += 1
+#         cart_product.save()
+#         return Response({'message': 'Product added to cart'}, status=status.HTTP_200_OK)
+
+# class CartViewSet(viewsets.ModelViewSet):
+#     queryset = Cart.objects.all()
+#     serializer_class = CartSerializer
+#
+#     @action(detail=False, methods=['post'], permission_classes=[IsAuthenticated])
+#     def add_to_cart(self, request):
+#         product_id = request.data.get('product_id')
+#         if not product_id:
+#             return Response({'error': 'Product ID is required'}, status=400)
+#
+#         try:
+#             product = Product.objects.get(id=product_id)
+#         except Product.DoesNotExist:
+#             return Response({'error': 'Product not found'}, status=404)
+#
+#         cart, created = Cart.objects.get_or_create(user=request.user)
+#         cart.products.add(product)
+#         cart.update_total_price()
+#
+#         return Response({'message': 'Product added to cart', 'total_price': cart.total_price}, status=200)
 
 
 class OrderViewSet(viewsets.ModelViewSet):

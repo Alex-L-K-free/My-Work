@@ -1,6 +1,6 @@
 #market/serializers.py
 from rest_framework import serializers
-from .models import Product, Cart, Order, Service
+from .models import Product, Cart, CartProduct, Order, Service
 
 class ProductSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()  # Обработчик для генерации полного URL
@@ -14,10 +14,20 @@ class ProductSerializer(serializers.ModelSerializer):
             return request.build_absolute_uri(obj.image.url)
         return None
 
+class CartProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartProduct
+        fields = '__all__'
+
 class CartSerializer(serializers.ModelSerializer):
+    products = CartProductSerializer(many=True, source='cartproduct_set')
+
     class Meta:
         model = Cart
         fields = '__all__'
+
+
+
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:

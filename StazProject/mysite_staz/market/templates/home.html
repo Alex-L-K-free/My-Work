@@ -13,6 +13,7 @@
     <!--Подключение CSS (подключает внешний CSS-файл из папки static/css для стилизации страницы)-->
     <!--<link rel="stylesheet" href="{% static 'css/style.css' %}">-->
     <!--внешний вид элементов: фон, шрифты, отступы, стили карточек товаров и кнопок-->
+
     <style>
         body {
             background: url('{% static "images/bookshelf.jpg" %}') no-repeat center center fixed; <!--фоновое изображение-->
@@ -188,7 +189,36 @@
     }
 </script>
 
-
+    <script>
+        function addToCart(productId) {
+            fetch('/cart/add-product/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ product_id: productId }),
+                credentials: 'include',
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка добавления товара');
+                }
+                return response.json();
+            })
+            .then(data => alert(data.message))
+            .catch(error => console.error('Ошибка:', error));
+        }
+    </script>
+</head>
+<body>
+    <div id="products">
+        {% for product in products %}
+        <div>
+            <h2>{{ product.name }}</h2>
+            <button onclick="addToCart({{ product.id }})">Добавить</button>
+        </div>
+        {% endfor %}
+    </div>
 
 </body>
 </html>
