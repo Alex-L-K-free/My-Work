@@ -1,10 +1,4 @@
 // frontend/src/Cart.js
-// import React, { useState, useEffect } from 'react';
-// import { fetchCart } from './axiosConfig';
-// import React from 'react';
-// import useFetchData from './hooks/useFetchData'; // Импорт хука
-// import { fetchCart } from './axiosConfig'; // Импорт функции для запроса API
-
 import React from 'react';
 import useFetchData from './hooks/useFetchData'; // Импорт хука
 import { fetchCart } from './axiosConfig'; // Импорт функции для запроса API

@@ -1,10 +1,6 @@
 // frontend/src/homepage.js
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid, Button, Card, CardContent, CardMedia } from '@mui/material';
-// import { Link } from 'react-router-dom';
-// import Header from './components/Header';
-// import Footer from './components/Footer';
-
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -54,7 +50,7 @@ const HomePage = () => {
           <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <CardMedia
               component="img"
-              image={product.image || '/placeholder.png'} // Замените на изображение-заглушку, если `product.image` отсутствует
+              image={product.image || '/placeholder.png'} // изображение-заглушка, если `product.image` отсутствует
               alt={product.name}
               sx={{
                 height: 180,
@@ -97,7 +93,7 @@ const HomePage = () => {
           py: 1, // Уменьшаем отступы
         }}
       >
-        <Typography variant="body1">© 2025 Книжный магазин. Все права защищены.</Typography>
+        <Typography variant="body1">© 2025 Книжный магазин.</Typography>
       </Box>
     </Box>
   );

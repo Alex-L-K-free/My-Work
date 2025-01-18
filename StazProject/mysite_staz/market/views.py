@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from django.db.models import ObjectDoesNotExist
+
 
 # Home view
 def home(request):
@@ -50,8 +50,7 @@ class CartViewSet(viewsets.ViewSet):
         product_id = request.data.get('product_id')
         quantity = request.data.get('quantity', 1)
 
-        # Логика добавления товара в корзину (например, добавить в модель Cart)
-        # cart = Cart.objects.get(user=request.user)
+        # добавления товара в корзину
         if not request.user.is_authenticated:
             return Response({"detail": "Authentication credentials were not provided."}, status=401)
 
@@ -63,23 +62,6 @@ class CartViewSet(viewsets.ViewSet):
         cart.add_product(product, quantity)
 
         return Response({'status': 'product added to cart'})
-
-# class CartViewSet(viewsets.ViewSet):
-#     @action(detail=False, methods=['post'], url_path='add-product', permission_classes=[IsAuthenticated])
-#     def add_product(self, request):
-#         product_id = request.data.get('product_id')
-#         if not product_id:
-#             return Response({'error': 'Product ID is required'}, status=400)
-#         try:
-#             product = Product.objects.get(id=product_id)
-#         except Product.DoesNotExist:
-#             return Response({'error': 'Product not found'}, status=404)
-#
-#         cart, created = Cart.objects.get_or_create(user=request.user)
-#         cart.products.add(product)
-#         cart.save()
-#
-#         return Response({'message': 'Product added to cart'}, status=200)
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
@@ -108,9 +90,7 @@ class UserProfileView(APIView):
 
 class DataView(APIView):
     def post(self, request, *args, **kwargs):
-        # Ваша логика здесь
         return Response({"message": "Данные получены"})
-
 
 @api_view(['GET', 'POST'])
 def register(request):
@@ -118,7 +98,7 @@ def register(request):
         return Response({'message': 'Please send a POST request to register.'})
 
     if request.method == 'POST':
-        # Обработка POST-запроса для регистрации пользователя
+        # POST-запрос для регистрации пользователя
         username = request.data.get('username')
         password = request.data.get('password')
 
@@ -130,31 +110,8 @@ def register(request):
 
         return Response({'error': 'Invalid data'}, status=400)
 
-# @api_view(['POST'])
-# def register(request):
-#     username = request.data.get('username')
-#     password = request.data.get('password')
-#     if username and password:
-#         if User.objects.filter(username=username).exists():
-#             return Response({'error': 'User already exists'}, status=400)
-#         user = User.objects.create_user(username=username, password=password)
-#         return Response({'message': 'User created successfully!'}, status=201)
-#     return Response({'error': 'Invalid data'}, status=400)
-
-# @api_view(['POST'])
-# def register(request):
-#     username = request.data.get('username')
-#     password = request.data.get('password')
-#     if username and password:
-#         if User.objects.filter(username=username).exists():
-#             return Response({'error': 'User already exists'}, status=400)
-#         user = User.objects.create_user(username=username, password=password)
-#         return Response({'message': 'User created successfully!'}, status=201)
-#     return Response({'error': 'Invalid data'}, status=400)
-
-#декоратор DRF для обработки POST-запроса
+# декоратор DRF для обработки POST-запроса
 def example_view(request):
-    # В DRF request.data будет доступен
     if request.method == 'POST':
         # обработка JSON данные
         try:
@@ -162,14 +119,13 @@ def example_view(request):
         except Exception as e:
             return Response({"error": str(e)}, status=400)
 
-        # Сериализуем данные
         serializer = ExampleSerializer(data=data)
         if serializer.is_valid():
             return Response(serializer.data, status=200)
         else:
             return Response(serializer.errors, status=400)
 
-# Если нужно обработать обычный Django-запрос (не DRF)
+# обработка обычного Django-запрос
 @csrf_exempt
 def example_view(request):
     if request.method == 'POST':
@@ -178,7 +134,6 @@ def example_view(request):
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
 
-        # Сериализуем данные
         serializer = ExampleSerializer(data=data)
         if serializer.is_valid():
             return JsonResponse(serializer.data, status=200)

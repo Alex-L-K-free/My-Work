@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Product, Cart, CartProduct, Order, Service
 
 class ProductSerializer(serializers.ModelSerializer):
-    image = serializers.SerializerMethodField()  # Обработчик для генерации полного URL
+    image = serializers.SerializerMethodField()
     class Meta:
         model = Product
         fields = '__all__'

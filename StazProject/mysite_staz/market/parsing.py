@@ -9,7 +9,7 @@ def get_kufar_books():
 
     try:
         response = requests.get(url, headers=headers)
-        response.raise_for_status()  # Проверка на ошибки HTTP
+        response.raise_for_status()  # Проверка на ошибки
     except requests.RequestException as e:
         print(f"Ошибка при запросе: {e}")
         return []
@@ -18,7 +18,7 @@ def get_kufar_books():
 
     # Попробуем найти объявления
     books = []
-    for item in soup.find_all('div', class_='kf-h6bb'):  # Найдите реальный класс для объявлений
+    for item in soup.find_all('div', class_='kf-h6bb'):  # реальный класс для объявлений
         try:
             title = item.find('a').text.strip()  # Название книги
             price = item.find('span', class_='kf-pj30').text.strip()  # Цена (поиск нужного класса)
@@ -40,24 +40,4 @@ if __name__ == "__main__":
         print("Книги не найдены или произошла ошибка.")
 
 
-    # for item in soup.find_all('div', class_='product-card'):
-    #     try:
-    #         title = item.find('a', class_='product-title').text.strip()
-    #         price = item.find('div', class_='product-price').text.strip()
-    #         books.append({'title': title, 'price': price})
-    #     except AttributeError:
-    #         print(f"Пропущен элемент из-за отсутствующих данных: {item}")
-    #         continue
-#
-#     return books
-#
-#
-# if __name__ == "__main__":
-#     books = get_new_books()
-#     if books:
-#         with open("books.txt", "w", encoding="utf-8") as file:
-#             for book in books:
-#                 file.write(f"Название: {book['title']}, Цена: {book['price']}\n")
-#         print("Результаты сохранены в файл books.txt")
-#     else:
-#         print("Книги не найдены или произошла ошибка.")
+

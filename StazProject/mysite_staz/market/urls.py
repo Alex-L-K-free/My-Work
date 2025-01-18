@@ -18,7 +18,6 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('api/register/', register, name='register'),
     path('api/profile/', views.UserProfileView.as_view(), name='user_profile'),
-    # path('api/profile/', UserProfileView.as_view(), name='user_profile'),
     path('api/cart/add/', CartViewSet.as_view({'post': 'add_to_cart'}), name='add_to_cart'),
 ] + router.urls
 
