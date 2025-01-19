@@ -1,0 +1,69 @@
+<!--/backend/books/templates/partials/navbar.html-->
+<nav>
+    <div class="navbar">
+        <a href="/" class="logo">Your Logo</a>
+        <ul class="nav-links">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/services">Services</a></li>
+            <li><a href="/contact">Contact</a></li>
+        </ul>
+        <div class="auth-links">
+            <a href="/login">Login</a>
+            <a href="/signup">Sign Up</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Подключение стилей для навигационной панели -->
+<style>
+    nav {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 0;
+    }
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .navbar .logo {
+        font-size: 1.5em;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .nav-links {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .nav-links li {
+        display: inline;
+        margin-right: 20px;
+    }
+
+    .nav-links a {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .nav-links a:hover {
+        text-decoration: underline;
+    }
+
+    .auth-links a {
+        color: #fff;
+        margin-left: 15px;
+        text-decoration: none;
+    }
+
+    .auth-links a:hover {
+        text-decoration: underline;
+    }
+</style>
